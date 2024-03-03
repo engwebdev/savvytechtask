@@ -15,10 +15,13 @@ class Race
     {
         $JsonDecoder = new JsonDecoder(); // todo add to construct
         $vehiclesDataFromJson = $JsonDecoder->jsonFileRead(__DIR__ . '/../vehicles.json');
+        ////////
+
+
         $vehicles = [];
         $vehicleChoices = [];
-        $table = new \cli\Table;
-        $table->setHeaders(['Index', 'Vehicle Name', 'Max Speed', 'Unit']);
+        $table = new \cli\Table; // todo add to construct
+        $table->setHeaders(['Vehicle Name', 'Max Speed', 'Unit']);
         foreach ($vehiclesDataFromJson as $key => $data) {
             // todo add to construct
             $vehicle = new Vehicle(
@@ -27,7 +30,7 @@ class Race
                 $data['unit']
             );
             $vehicles[] = $vehicle;
-            $table->addRow([$key, $data['name'], $data['maxSpeed'], $data['unit']]);
+            $table->addRow([$data['name'], $data['maxSpeed'], $data['unit']]);
             $vehicleChoices[] = "{$data['name']}";
         }
 
@@ -75,5 +78,10 @@ class Race
         }else{
             echo "we do not have winner! every player lost..... " . "\n";
         }
+    }
+
+    public function raceResult($player_1, $player_2)
+    {
+
     }
 }
