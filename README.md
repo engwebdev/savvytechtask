@@ -3,7 +3,7 @@ This PHP project is a Command Line Interface (CLI) based two-player racing game.
 from a list provided in a vehicles.json file. Each vehicle has a maximum speed. The application calculates the time
 taken by each vehicle to complete a given distance based on its speed and then declares the winner.
 
-####The full description is available on the GitHub [savvy tech job interview task](https://github.com/savvytechapp/php-race-game)
+###The full description is available on the GitHub [savvy tech job interview task](https://github.com/savvytechapp/php-race-game)
 
 ## How to run the savvytechtask project
 
