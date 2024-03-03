@@ -5,27 +5,31 @@ namespace App;
 class Player
 {
     public string $PlayerName;
-    public string $VehicleName;
-    public float $VehicleSpeed;
-    public string $VehicleUnit;
+    public Vehicle $Vehicle;
     public float $VehicleSpeedByKMH;
 
-    public function __construct(
-        string $playerName,
-        string $vehicleName,
-        float  $vehicleSpeed,
-        string $vehicleUnit
-    )
+    public function __construct()
     {
-        $this->PlayerName = $playerName;
-        $this->VehicleName = $vehicleName;
-        $this->VehicleSpeed = $vehicleSpeed;
-        $this->VehicleUnit = $vehicleUnit;
-        $this->VehicleSpeedByKMH = $this->speedConvertor($vehicleSpeed);
     }
 
-    private function speedConvertor(float $vehicleSpeed): float
+    public function setPlayerName(string $playerName)
     {
+        $this->PlayerName = $playerName;
+    }
+
+    public function setPlayerVehicle(Vehicle $vehicle)
+    {
+        $this->Vehicle = $vehicle;
+    }
+
+    public function getPlayerVehicle(): Vehicle
+    {
+        return $this->Vehicle;
+    }
+
+    private function vehicleSpeedByKMH(): string
+    {
+        $this->Vehicle->speed();
         return 0;
     }
 
