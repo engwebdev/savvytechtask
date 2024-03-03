@@ -7,21 +7,31 @@ class Race
     public array $players = [];
     public array $vehicleChoices = [];
     public array $countOfPlayer = [];
+    public ?array $vehiclesDataFromJson;
+    public \cli\Table $table;
+    public array $vehicles;
 
     public function __construct()
     {
-        $this->countOfPlayer = [1 , 2];
+        $this->countOfPlayer = [1, 2];
+        $JsonDecoder = new JsonDecoder();
+        $this->vehiclesDataFromJson = $JsonDecoder->jsonFileRead(__DIR__ . '/../vehicles.json');
+        $this->table = new \cli\Table;
     }
 
     public function run()
     {
-        $JsonDecoder = new JsonDecoder(); // todo add to construct
-        $vehiclesDataFromJson = $JsonDecoder->jsonFileRead(__DIR__ . '/../vehicles.json');
-        ////////
-        $table = new \cli\Table; // todo add to construct
-        $table->setHeaders(['Vehicle Name', 'Max Speed', 'Unit']);
-        $vehicles = [];
-        foreach ($vehiclesDataFromJson as $key => $data) {
+        $this->setRaceData();
+        $this->startGame($this->countOfPlayer);
+        $result = $this->raceResult($this->players);
+        $this->showResult($result);
+    }
+
+    private function setRaceData()
+    {
+        $this->table->setHeaders(['Vehicle Name', 'Max Speed', 'Unit']);
+        $this->vehicles = [];
+        foreach ($this->vehiclesDataFromJson as $key => $data) {
             // todo add to construct
             $vehicle = new Vehicle(
                 $data['name'],
@@ -29,60 +39,37 @@ class Race
                 $data['unit'],
             );
             $vehicle->setSpeedKMH();
-            $vehicles[] = $vehicle;
+            $this->vehicles[] = $vehicle;
             $this->vehicleChoices[] = "{$data['name']}";
-            $table->addRow([$data['name'], $data['maxSpeed'], $data['unit']]);
-        }
-        echo "******** game *********\n";
-        echo "Welcome to Racing Game!\n";
-
-        foreach ($this->countOfPlayer as $key => $value){
-            $this->players[$value] = new player();
-            $name = $this->setPlayer($value);
-            $this->players[$value]->setPlayerName($name);
-            $table->display();
-            $vehicle_row = $this->selectFromMenu($this->vehicleChoices, $this->players[$value]);
-            $player_vehicle = $vehicles[$vehicle_row];
-            $this->players[$value]->setPlayerVehicle($player_vehicle);
-        }
-
-
-        var_dump($this->players);
-        ///////////////////////////
-//        if ($vehicles[$select_player_2]->unit != 'Km/h') {
-//            $speed_2 = $vehicles[$select_player_2]->maxSpeed * 1.852;
-//            echo $speed_2 . " convert from " . $vehicles[$select_player_2]->unit . "\n";
-//        }
-//        else {
-//            $speed_2 = $vehicles[$select_player_2]->maxSpeed;
-//            echo $speed_2 . " from " . $vehicles[$select_player_2]->unit . "\n";
-//        }
-//        if ($vehicles[$select_player_1]->unit != 'Km/h') {
-//            $speed_1 = $vehicles[$select_player_1]->maxSpeed * 1.851;
-//            echo $speed_1 . " convert from " . $vehicles[$select_player_1]->unit . "\n";
-//        }
-//        else {
-//            $speed_1 = $vehicles[$select_player_1]->maxSpeed;
-//            echo $speed_1 . " from " . $vehicles[$select_player_1]->unit . "\n";
-//        }
-
-        ////////////////////////////
-        echo "finally.... " . "\n";
-        if ($speed_1 > $speed_2) {
-            echo "player " . $pleyer_one . " is winner!! " . "\n";
-        }
-        elseif ($speed_1 < $speed_2) {
-            echo "player " . $pleyer_two . " is winner!! " . "\n";
-        }
-        else {
-            echo "we do not have winner! every player lost..... " . "\n";
+            $this->table->addRow([$data['name'], $data['maxSpeed'], $data['unit']]);
         }
     }
 
-    public function raceResult($players)
+    private function startGame($countOfPlayer)
     {
+        echo "******** game *********\n";
+        echo "Welcome to Racing Game!\n";
 
+        foreach ($countOfPlayer as $key => $value) {
+            $this->players[$value] = new player();
+            $name = $this->setPlayer($value);
+            $this->players[$value]->setPlayerName($name);
+            $this->table->display();
+            $vehicle_row = $this->selectFromMenu($this->vehicleChoices, $this->players[$value]);
+            $player_vehicle = $this->vehicles[$vehicle_row];
+            $this->players[$value]->setPlayerVehicle($player_vehicle);
+        }
+    }
 
+    private function raceResult($players): array
+    {
+        $result = [];
+        foreach ($players as $key => $player) {
+            $time = (1000 / (float) $player->Vehicle->speedWithKM);
+            $result[$player->PlayerName] = $time;
+        }
+        asort($result);
+        return $result;
     }
 
     public function setPlayer($id): string
@@ -97,4 +84,16 @@ class Race
         echo "player " . $player->PlayerName . " select " . $vehicleList[$selected] . "\n";
         return $selected;
     }
+
+    private function showResult($result)
+    {
+        $i = 1;
+        echo "finally result is..... " . "\n";
+        foreach ($result as $key => $row){
+            echo "The " . $i . " person in the '" . $key . "' competition by getting the time of " . $row . " hours " . "\n";
+            $i++;
+        }
+    }
+
+
 }

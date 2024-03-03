@@ -21,16 +21,4 @@ class Player
     {
         $this->Vehicle = $vehicle;
     }
-
-    public function getPlayerVehicle(): Vehicle
-    {
-        return $this->Vehicle;
-    }
-
-    private function vehicleSpeedByKMH(): string
-    {
-        $this->Vehicle->speed();
-        return 0;
-    }
-
 }
