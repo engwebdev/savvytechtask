@@ -1,5 +1,5 @@
 <?php
-namespace App;
+namespace App\Vehicle;
 class Vehicle
 {
     public string $name;

@@ -1,5 +1,5 @@
 <?php
-namespace App;
+namespace App\Helper;
 
 class JsonDecoder
 {

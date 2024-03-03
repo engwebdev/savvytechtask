@@ -1,6 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Player;
+
+use App\Vehicle\Vehicle;
 
 class Player
 {

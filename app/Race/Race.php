@@ -1,6 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Race;
+
+use App\Helper\JsonDecoder;
+use App\Player\Player;
+use App\Vehicle\Vehicle;
 
 class Race
 {
@@ -15,7 +19,7 @@ class Race
     {
         $this->countOfPlayer = [1, 2];
         $JsonDecoder = new JsonDecoder();
-        $this->vehiclesDataFromJson = $JsonDecoder->jsonFileRead(__DIR__ . '/../vehicles.json');
+        $this->vehiclesDataFromJson = $JsonDecoder->jsonFileRead(__DIR__ . '/../../assets/vehicles.json');
         $this->table = new \cli\Table;
     }
 
