@@ -13,12 +13,14 @@ class Race
 
     public function run()
     {
-        $vehiclesDataFromJson = json_decode(file_get_contents(__DIR__.'/../vehicles.json'), true);
+        $JsonDecoder = new JsonDecoder(); // todo add to construct
+        $vehiclesDataFromJson = $JsonDecoder->jsonFileRead(__DIR__ . '/../vehicles.json');
         $vehicles = [];
         $vehicleChoices = [];
         $table = new \cli\Table;
         $table->setHeaders(['Index', 'Vehicle Name', 'Max Speed', 'Unit']);
         foreach ($vehiclesDataFromJson as $key => $data) {
+            // todo add to construct
             $vehicle = new Vehicle(
                 $data['name'],
                 $data['maxSpeed'],
